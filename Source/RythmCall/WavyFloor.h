@@ -25,10 +25,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, category = "Map")
 	class UStaticMeshComponent* StaticMesh;
 
+	
+
 	UFUNCTION(BlueprintCallable)
 	void Trigger(bool bDelay, float DelayTime);
 
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,category = "WavyFloor")
+	UFUNCTION(BlueprintCallable)
+	void AfterTrigger();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, category = "WavyFloor")
 	bool bTriggered;
 
 	UPROPERTY()
@@ -40,7 +45,7 @@ public:
 	UPROPERTY()
 	float Glow;
 
-	UPROPERTY()
+	UPROPERTY(Replicated)
 	TArray <AWavyFloor*> NeighborList;
 
 	UPROPERTY()
@@ -70,10 +75,12 @@ public:
 
 	// 모두에서 실행되는 커스텀 이벤트
 	UFUNCTION(NetMulticast, Reliable)
-	void MulticastCustomEventTrigger(bool bDelay, float DelayTime);
+	void MulticastCustomEventAfterTrigger();
 
 	UPROPERTY(EditAnywhere)
 	class UCurveFloat* TimelineCurve;
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 protected:
 	// Called when the game starts or when spawned
@@ -82,9 +89,13 @@ protected:
 	UFUNCTION()
 	void Initialize();
 
-	float Delay = 0.0f;
+	float Delay = 0.1f;
 
 	FTimeline TimeLine;
+
+	FOnTimelineFloat TimeLineUpdateDelegate;
+
+	FOnTimelineEvent TimeLineFinishDelegate;
 
 	UFUNCTION()
 	void TimeLineUpdateFunc(float Output);

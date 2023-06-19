@@ -27,6 +27,10 @@ AWavyFloor::AWavyFloor()
 	StaticMesh->SetupAttachment(RootComponent);
 
 	bTriggered = false;
+	//밟으면 없어지는 로직
+	/*MaxTriggers = 2;
+	CurrentTriggers = 0;
+	bDestroyed = false;*/
 }
 
 void AWavyFloor::BeginPlay()
@@ -57,7 +61,7 @@ void AWavyFloor::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifeti
 }
 void AWavyFloor::ServerCustomEventTrigger_Implementation(bool bDelay, float DelayTime)
 {
-	if (!bTriggered)
+	if (bTriggered==false)
 	{
 		bTriggered = true;
 
@@ -94,7 +98,7 @@ void AWavyFloor::AfterTrigger()
 
 	for (const auto& Element : NeighborList)
 	{
-		Delay = FMath::RandRange(0.01f, 0.1f);
+		Delay = FMath::RandRange(0.01f, 0.05f);
 		Element->Trigger(true, Delay);
 	}
 }
@@ -134,8 +138,9 @@ void AWavyFloor::Initialize()
 			NeighborList.Add(WavyFloorElement);
 		}
 	}
-
+	NeighborList.Remove(this);
 	SetScalarParameterValueOnMaterials(StaticMesh, FName("DelayTime"), 2.0f);
+	NeighborDetector->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void AWavyFloor::SetScalarParameterValueOnMaterials(UStaticMeshComponent* MeshComponent, FName ParameterName, float ParameterValue)
@@ -174,3 +179,20 @@ void AWavyFloor::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	TimeLine.TickTimeline(DeltaTime);
 }
+////밟으면 없어지는 로직
+//void AWavyFloor::RegisterTrigger()
+//{
+//	if (bDestroyed)
+//	{
+//		return;
+//	}
+//
+//	CurrentTriggers++;
+//
+//	if (CurrentTriggers >= MaxTriggers)
+//	{
+//		bDestroyed = true;
+//		StaticMesh->SetVisibility(false);
+//		StaticMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+//	}
+//}

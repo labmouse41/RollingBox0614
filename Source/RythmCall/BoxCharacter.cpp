@@ -3,6 +3,7 @@
 
 #include "BoxCharacter.h"
 #include "Obstacle.h"
+#include "WavyFloor.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
@@ -369,9 +370,9 @@ void ABoxCharacter::Look(const FInputActionValue& Value)
 void ABoxCharacter::Jump()
 {
 	
-	if (Cube&& OnGround().ReturnValue)
+	if (Cube && OnGround().ReturnValue)
 	{
-		JumpForce = 777.0f;
+		JumpForce = 1000.0f;
 		FVector LinearVelocity = Cube->GetPhysicsLinearVelocity();
 		FVector NewLinearVelocity = FVector(LinearVelocity.X, LinearVelocity.Y, JumpForce);
 
@@ -379,8 +380,37 @@ void ABoxCharacter::Jump()
 		Cube->SetPhysicsLinearVelocity(NewLinearVelocity);
 
 		PlayJumpParticlesOnPoint(OnGround().TouchingThis->GetRelativeLocation(), OnGround().TouchingThis);
+		////해당자리에서 점프를 뛰기시작하면 카운트 1 3이되면 발판사라짐.
+		//TArray<AWavyFloor*> HitFloors;
+
+		//// 캐릭터의 히트 결과를 저장할 구조체
+		//FHitResult HitResult;
+
+		//// 캐릭터의 위치와 방향을 기반으로 히트를 수행합니다.
+		//FVector CharacterLocation = this->GetActorLocation();
+		//FVector ForwardVector = this->GetActorForwardVector();
+		//FVector EndLocation = CharacterLocation + ForwardVector * 800.f;
+
+		//FCollisionQueryParams CollisionParams;
+		//CollisionParams.AddIgnoredActor(this);
+
+		//// 캐릭터의 위치에서 끝 위치까지 히트를 수행합니다.
+		//if (GetWorld()->LineTraceSingleByChannel(HitResult, CharacterLocation, EndLocation, ECC_Visibility, CollisionParams))
+		//{
+		//	// 히트된 액터가 AWavyFloor 타입인 경우에만 처리합니다.
+		//	AWavyFloor* HitWavyFloor = Cast<AWavyFloor>(HitResult.GetActor());
+		//	if (HitWavyFloor)
+		//	{
+		//		HitFloors.Add(HitWavyFloor);
+		//	}
+		//}
+
+		//// HitFloors 배열의 요소를 사용하여 처리합니다.
+		//for (AWavyFloor* Floor : HitFloors)
+		//{
+		//	Floor->RegisterTrigger();
+		//}
 	}
-	
 }
 void ABoxCharacter::OnCharacterHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {

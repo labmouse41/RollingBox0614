@@ -82,6 +82,12 @@ public:
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
+	//UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Properties")
+	//int32 MaxTriggers;
+
+	//UFUNCTION(BlueprintCallable, Category = "Triggers")
+	//void RegisterTrigger();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -105,6 +111,11 @@ protected:
 
 	UPROPERTY()
 	float ZOffSet;
+private:
+
+	int32 CurrentTriggers;
+
+	bool bDestroyed;
 
 public:	
 	// Called every frame

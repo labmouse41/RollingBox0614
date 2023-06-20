@@ -270,28 +270,15 @@ FOnGroundReturn ABoxCharacter::OnGround()
 	{
 		for (int i = 0; i < Arrows.Num(); i++)
 		{
-			//일단 실행! Arrow가 있는지 확인
-			try {
-				if (Arrows.IsValidIndex(i) && Arrows[i] && CastLineToBottom(Arrows[i]->GetComponentLocation()))
-				{
-					Result.ReturnValue = true;
-					Result.TouchingThis = Arrows[i];
-					break;
-				}
-				else
-				{
+			if (Arrows.IsValidIndex(i) && Arrows[i] && CastLineToBottom(Arrows[i]->GetComponentLocation()))
+			{
+				Result.ReturnValue = true;
+				Result.TouchingThis = Arrows[i];
+				break;
+			}
+			else
+			{
 					Result.TouchingThis = Arrows[7];
-				}
-			}
-			catch (const std::exception& e) {
-				UE_LOG(LogTemp, Error, TEXT("Exception occurred: %s"), *FString(e.what()));
-				Result.ReturnValue = false;
-				break;
-			}
-			catch (...) {
-				UE_LOG(LogTemp, Error, TEXT("Unknown exception occurred"));
-				Result.ReturnValue = false;
-				break;
 			}
 		}
 	}

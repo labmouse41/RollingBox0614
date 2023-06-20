@@ -19,10 +19,10 @@ public:
 	UFUNCTION()
 	void CountDown();
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadWrite)
 	int32 Minutes = 2;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadWrite)
 	int32 Seconds = 0;
 protected:
 	// Called when the game starts or when spawned

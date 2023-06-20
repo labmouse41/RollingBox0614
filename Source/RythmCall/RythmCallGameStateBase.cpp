@@ -27,7 +27,7 @@ void ARythmCallGameStateBase::CountDown()
 		}
 		else
 		{
-			Minutes -= 0;
+			Minutes -= 1;
 			Seconds = 59;
 		}
 	}

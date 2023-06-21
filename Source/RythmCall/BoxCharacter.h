@@ -19,6 +19,12 @@ struct FOnGroundReturn
 
 	UPROPERTY(BlueprintReadWrite)
 	bool ReturnValue;
+
+	FOnGroundReturn()
+	{
+		TouchingThis = NULL;
+		ReturnValue = false;
+	}
 };
 
 USTRUCT(BlueprintType)
@@ -31,6 +37,12 @@ struct FLengthSquaredFromComponentToPointReturn
 
 	UPROPERTY(BlueprintReadWrite)
 	USceneComponent* OutComponent;
+
+	FLengthSquaredFromComponentToPointReturn()
+	{
+		LengthSquared = 0.0f;
+		OutComponent = NULL;
+	}
 };
 
 UCLASS()
